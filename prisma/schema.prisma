@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+enum Character {
+  AKI
+  AKUMA
+  BLANKA
+  CAMMY
+  CHUN_LI
+  DEE_JAY
+  DHALSIM
+  ED
+  E_HONDA
+  GUILE
+  JAMIE
+  JP
+  JURI
+  KEN
+  KIMBERLY
+  LILY
+  LUKE
+  MANON
+  MARISA
+  RASHID
+  RYU
+  ZANGIEF
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String?   @unique
+  emailVerified DateTime?
+  name          String?   @unique
+  password      String
+  sets          Set[]
+  accounts      Account[]
+  sessions      Session[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model SetNote {
+  id        String   @id @default(cuid())
+  content   String
+  set       Set      @relation(fields: [setId], references: [id])
+  setId     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Game {
+  id        String   @id @default(cuid())
+  set       Set      @relation(fields: [setId], references: [id])
+  setId     String
+  rounds    Int // Binary representation of the rounds (e.g., 11 for win-win, 00 for lose-lose, 101 for win-lose-win, 010 for lose-win-lose)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Set {
+  id                 String    @id @default(cuid())
+  name               String
+  owner              User      @relation(fields: [ownerId], references: [id])
+  ownerId            String
+  notes              SetNote[]
+  games              Game[]
+  player_character   Character
+  opponent_character Character
+
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}

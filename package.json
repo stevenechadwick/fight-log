@@ -1,5 +1,5 @@
 {
-  "name": "hello-next",
+  "name": "fight-log",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -11,14 +11,30 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "next": "12.0.10",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "@next-auth/prisma-adapter": "^1.0.7",
+    "@nextui-org/react": "^2.4.1",
+    "@nextui-org/system": "^2.2.1",
+    "@nextui-org/theme": "^2.2.5",
+    "@prisma/client": "^5.15.0",
+    "bcrypt": "^5.1.1",
+    "eslint": "^9.4.0",
+    "eslint-config-next": "^14.2.4",
+    "framer-motion": "^11.2.10",
+    "next": "^14.2.4",
+    "next-auth": "^4.24.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-markdown": "8.0.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5",
     "@types/node": "17.0.14",
     "@types/react": "17.0.38",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "prisma": "^5.15.0",
+    "tailwindcss": "^3.4.4",
     "typescript": "4.5.5"
-  }
+  },
+  "packageManager": "pnpm@9.3.0+sha512.ee7b93e0c2bd11409c6424f92b866f31d3ea1bef5fbe47d3c7500cdc3c9668833d2e55681ad66df5b640c61fa9dc25d546efa54d76d7f8bf54b13614ac293631"
 }
