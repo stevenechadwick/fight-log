@@ -42,9 +42,10 @@ model User {
   sets          Set[]
   accounts      Account[]
   sessions      Session[]
+  games         Game[]
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Account {
@@ -87,20 +88,23 @@ model VerificationToken {
 }
 
 model SetNote {
-  id        String   @id @default(cuid())
-  content   String
-  set       Set      @relation(fields: [setId], references: [id])
-  setId     String
+  id      String @id @default(cuid())
+  content String
+  set     Set    @relation(fields: [setId], references: [id])
+  setId   String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Game {
-  id        String   @id @default(cuid())
-  set       Set      @relation(fields: [setId], references: [id])
-  setId     String
-  rounds    Int // Binary representation of the rounds (e.g., 11 for win-win, 00 for lose-lose, 101 for win-lose-win, 010 for lose-win-lose)
+  id      String  @id @default(cuid())
+  set     Set     @relation(fields: [setId], references: [id])
+  setId   String
+  rounds  Int // Binary representation of the rounds (e.g., 11 for win-win, 00 for lose-lose, 101 for win-lose-win, 010 for lose-win-lose)
+  win     Boolean
+  owner   User    @relation(fields: [ownerId], references: [id])
+  ownerId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -116,6 +120,6 @@ model Set {
   player_character   Character
   opponent_character Character
 
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
