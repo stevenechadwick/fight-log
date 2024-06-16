@@ -3,7 +3,8 @@
 import { getServerSession } from "next-auth";
 import UserSection from "./components/userSection";
 import prisma from "@lib/prisma";
-import { Card, CardBody } from "@nextui-org/react";
+import AddSetButton from "./components/addSet/addSetButton";
+import LayoutNav from "./components/navbar";
 
 async function getProfile({ username }) {
   const user = await prisma.user.findUnique({
@@ -53,21 +54,31 @@ async function getProfile({ username }) {
   const totalGames = gameTally._count._all;
   const totalWins = gameTally._count.win;
 
-  const winRate = totalGames > 0 ? totalWins / totalGames : 0;
+  const winRate = totalGames > 0 ? totalWins / totalGames * 100 : 0;
   const mostUsedCharacter = characterUsage[0]?.player_character || 'ryu';
   const dateJoined = user.createdAt;
   const lastGame = recentSet?.createdAt;
 
-  console.log({ dateJoined, lastGame, mostUsedCharacter, winRate, username })
   return { dateJoined, lastGame, mostUsedCharacter, winRate, username};
 }
 export default async function Home() {
   const session = await getServerSession();
   if (!session) return null;
 
+  console.log(session);
+
   const profileData = await getProfile({ username: session?.user?.name });
 
   return (
-    <UserSection profileData={profileData} />
+    <>
+      {
+        // TODO: override navbar on login/signup pages rather than removing it from the root layout
+      }
+      <LayoutNav />
+      <div className="flex flex-col gap-y-4">
+        <UserSection profileData={profileData} />
+        <AddSetButton />
+      </div>
+    </>
   );
 }
