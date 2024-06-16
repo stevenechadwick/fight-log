@@ -3,6 +3,9 @@
 import { getServerSession } from "next-auth";
 
 import prisma from "@lib/prisma";
+import { Prisma } from "@prisma/client";
+
+type GameCreateWithoutSetInput = Prisma.GameCreateWithoutSetInput;
 
 const encodeRounds = (r1 : boolean, r2 : boolean, r3 : boolean) => {
   const encoded = (r1 ? '1' : '0') + (r2 ? '1' : '0') + (r3 ? '1' : '0');
@@ -48,8 +51,6 @@ export const addSet = async (formData) => {
       owner: { connect: { id: user.id } }
     } : null;
 
-    const games = [g1, g2, g3].filter((g) => g !== null);
-
     const result = await prisma.$transaction([
       prisma.set.create({
         data: {
@@ -65,7 +66,9 @@ export const addSet = async (formData) => {
           },
           games: {
             create: [
-              ...games
+              g1,
+              ...(g2 ? [g2] : []),
+              ...(g3 ? [g3] : [])
             ]
           },
         }

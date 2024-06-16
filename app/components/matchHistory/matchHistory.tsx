@@ -33,6 +33,7 @@ export default function MatchHistory({ sets }) {
       </TableHeader>
       <TableBody items={rows}>
         {(item) => (
+          // @ts-ignore
           <TableRow key={item.key}>
             {(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
           </TableRow>
