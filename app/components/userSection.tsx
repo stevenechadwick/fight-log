@@ -26,7 +26,7 @@ export default function UserSection({ profileData }: UserSectionProps) {
             <h3>{username}</h3>
             <p>Date Joined: {dateJoined.toLocaleDateString()}</p>
             <p>Last Game: {lastGame ? lastGame.toLocaleDateString() : "Never" }</p>
-            <p>Win Rate: {winRate} %</p>
+            <p>Win Rate: {winRate.toFixed(2)} %</p>
           </div>
         </div>
       </CardBody>

@@ -1,10 +1,10 @@
-'use server';
-
 import { getServerSession } from "next-auth";
 import UserSection from "./components/userSection";
 import prisma from "@lib/prisma";
 import AddSetButton from "./components/addSet/addSetButton";
 import LayoutNav from "./components/navbar";
+import MatchHistory from "./components/matchHistory/matchHistory";
+import { MatchHistoryController } from "./components/matchHistory/matchHistoryController";
 
 async function getProfile({ username }) {
   const user = await prisma.user.findUnique({
@@ -39,33 +39,31 @@ async function getProfile({ username }) {
     },
   });
 
-  const winRatePromise = prisma.game.aggregate({
+  const totalGamesPromise = prisma.game.count({
     where: {
-      ownerId: user.id,
-    },
-    _count: {
-      _all: true,
-      win: true,
+      ownerId: user.id
     }
   });
 
-  const [recentSet, characterUsage, gameTally] = await Promise.all([setPromise, usagePromise, winRatePromise]);
+  const wonGamesPromise = prisma.game.count({
+    where: {
+      ownerId: user.id,
+      win: true
+    }
+  });
 
-  const totalGames = gameTally._count._all;
-  const totalWins = gameTally._count.win;
+  const [recentSet, characterUsage, gameTally, wonGames] = await Promise.all([setPromise, usagePromise, totalGamesPromise, wonGamesPromise]);
 
-  const winRate = totalGames > 0 ? totalWins / totalGames * 100 : 0;
+  const winRate = gameTally > 0 ? (wonGames / gameTally) * 100 : 0;
   const mostUsedCharacter = characterUsage[0]?.player_character || 'ryu';
   const dateJoined = user.createdAt;
   const lastGame = recentSet?.createdAt;
 
-  return { dateJoined, lastGame, mostUsedCharacter, winRate, username};
+  return { dateJoined, lastGame, mostUsedCharacter, winRate, username, userId: user.id};
 }
 export default async function Home() {
   const session = await getServerSession();
   if (!session) return null;
-
-  console.log(session);
 
   const profileData = await getProfile({ username: session?.user?.name });
 
@@ -78,6 +76,7 @@ export default async function Home() {
       <div className="flex flex-col gap-y-4">
         <UserSection profileData={profileData} />
         <AddSetButton />
+        <MatchHistoryController userId={profileData?.userId} />
       </div>
     </>
   );
