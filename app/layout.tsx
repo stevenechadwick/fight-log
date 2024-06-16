@@ -9,8 +9,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className="dark text-foreground bg-background">
       <body>
         <Providers>
+          <div className="px-4 lg:px-32 max-w-screen-xl mx-auto">
           <LayoutNav />
-          <div className="px-4 lg:px-32">
             {children}
           </div>
         </Providers>

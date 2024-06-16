@@ -21,7 +21,7 @@ export default function UserSection({ profileData }: UserSectionProps) {
     <Card fullWidth className="w-full flex items-center">
       <CardBody>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-          <CharacterAvatar character={mostUsedCharacter || 'ryu'} width={287.5} height={312.5} />
+          <CharacterAvatar character={mostUsedCharacter || 'ryu'} width={143.75} height={156.25} />
           <div>
             <h3>{username}</h3>
             <p>Date Joined: {dateJoined.toLocaleDateString()}</p>
