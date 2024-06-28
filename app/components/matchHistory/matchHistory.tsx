@@ -1,8 +1,21 @@
 'use client';
 
+import { useEffect, useState } from "react";
+import { Pagination } from "@nextui-org/react";
 import { getKeyValue, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/table";
+import { getSetHistory } from "./getSetHistory";
 
-export default function MatchHistory({ sets }) {
+export default function MatchHistory({ pages, sets, userId }) {
+
+  const [currentSets, setCurrentSets] = useState(sets);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    getSetHistory(page, userId).then(({ sets }) => {
+      setCurrentSets(sets);
+    });
+  }, [page, userId]);
+
   const columns = [
     { label: 'Date Logged', key: 'createdAt' },
     { label: 'Character', key: 'player_character' },
@@ -10,10 +23,9 @@ export default function MatchHistory({ sets }) {
     { label: 'Result', key: 'result' },
     { label: 'Post Rating', key: 'rating' },
     { label: 'Post Rank', key: 'league' },
-    { label: 'Notes', key: 'notes' },
   ];
 
-  const rows = sets.map((set) => {
+  const rows = currentSets.map((set) => {
     return {
       key: set.id,
       createdAt: set.createdAt.toDateString(),
@@ -22,12 +34,28 @@ export default function MatchHistory({ sets }) {
       result: set.games.map((game) => game.win ? 'W' : 'L').join(' '),
       rating: set.rating,
       league: set.league,
-      notes: set.notes.length > 0 ? set.notes[0]?.content : '-',
     }
   });
 
   return (
-    <Table aria-label="Example table with dynamic content">
+    <Table
+      aria-label="Example table with dynamic content"
+      bottomContent={
+        pages > 1 ? (
+          <div className="flex w-full justify-center">
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color="primary"
+              page={page}
+              total={pages}
+              onChange={(page) => setPage(page)}
+            />
+          </div>
+        ) : null
+      }
+    >
       <TableHeader columns={columns}>
         {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
       </TableHeader>

@@ -3,9 +3,9 @@ import MatchHistory from "./matchHistory";
 
 export const MatchHistoryController = async ({ userId }: { userId: string | undefined }) => {
   if (!userId) return null;
-  const sets = await getSetHistory(1, userId);
+  const { sets, pages } = await getSetHistory(1, userId);
 
   return (
-    <MatchHistory sets={sets} />
+    <MatchHistory pages={pages} sets={sets} userId={userId} />
   );
 }
