@@ -28,6 +28,7 @@ enum Character {
   LUKE
   MANON
   MARISA
+  M_BISON
   RASHID
   RYU
   ZANGIEF

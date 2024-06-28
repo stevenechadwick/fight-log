@@ -7,6 +7,7 @@ import { Autocomplete, AutocompleteItem, Card, CardHeader, CardBody, Checkbox, B
 import { $Enums } from "@prisma/client";
 import { FaPlus } from "react-icons/fa";
 import { addSet } from "./addSet";
+import { HumanReadableCharacterNames } from "../../constants";
 
 export default function AddSetForm({ onClose}) {
   // TODO make a type for this data
@@ -79,14 +80,14 @@ export default function AddSetForm({ onClose}) {
         <Autocomplete placeholder="Your Character" name="player_character" onSelectionChange={(key) => handleAutoCompleteChange(key, "player_character")}>
           {Object.keys($Enums.Character).map((character) => (
             <AutocompleteItem key={character} value={character}>
-              {character}
+              {HumanReadableCharacterNames[character]}
             </AutocompleteItem>
           ))}
         </Autocomplete>
         <Autocomplete placeholder="Opponent Character" name="opponent_character" onSelectionChange={(key) => handleAutoCompleteChange(key, "opponent_character")}>
           {Object.keys($Enums.Character).map((character) => (
             <AutocompleteItem key={character} value={character}>
-              {character}
+              {HumanReadableCharacterNames[character]}
             </AutocompleteItem>
           ))}
         </Autocomplete>

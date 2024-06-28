@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Pagination } from "@nextui-org/react";
 import { getKeyValue, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/table";
 import { getSetHistory } from "./getSetHistory";
+import { HumanReadableCharacterNames, HumanReadableLeagueNames } from "../../constants";
 
 export default function MatchHistory({ pages, sets, userId }) {
 
@@ -26,14 +27,16 @@ export default function MatchHistory({ pages, sets, userId }) {
   ];
 
   const rows = currentSets.map((set) => {
+    const wins = set.games.filter((game) => game.win).length;
+    const losses = set.games.length - wins;
     return {
       key: set.id,
       createdAt: set.createdAt.toDateString(),
-      player_character: set.player_character,
-      opponent_character: set.opponent_character,
-      result: set.games.map((game) => game.win ? 'W' : 'L').join(' '),
+      player_character: HumanReadableCharacterNames[set.player_character],
+      opponent_character: HumanReadableCharacterNames[set.opponent_character],
+      result: `${wins}-${losses}`,
       rating: set.rating,
-      league: set.league,
+      league: HumanReadableLeagueNames[set.league],
     }
   });
 
