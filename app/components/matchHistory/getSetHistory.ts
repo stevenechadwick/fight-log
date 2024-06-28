@@ -26,7 +26,5 @@ export const getSetHistory = async (page: number, userId: string) => {
 
   const pages = Math.ceil(totalSets / 10);
 
-  console.log(sets);
-
   return { sets: sets, pages: pages };
 }

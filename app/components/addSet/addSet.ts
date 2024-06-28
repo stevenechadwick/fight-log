@@ -19,7 +19,6 @@ const isWinner = (r1: boolean, r2: boolean, r3: boolean) => {
 
 
 export const addSet = async (formData) => {
-  console.log(formData);
   const session = await getServerSession();
   if (!session) return null;
   if (!session.user?.name) return null;
@@ -75,7 +74,6 @@ export const addSet = async (formData) => {
       })
     ]);
 
-    console.log(result);
     return true;
   } catch (error) {
     console.error(error);
