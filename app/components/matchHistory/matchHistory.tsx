@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { Pagination } from "@nextui-org/react";
+import { Pagination, Spinner } from "@nextui-org/react";
 import { getKeyValue, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/table";
 import { getSetHistory } from "./getSetHistory";
 import { HumanReadableCharacterNames, HumanReadableLeagueNames } from "../../constants";
@@ -10,10 +10,12 @@ export default function MatchHistory({ pages, sets, userId }) {
 
   const [currentSets, setCurrentSets] = useState(sets);
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getSetHistory(page, userId).then(({ sets }) => {
       setCurrentSets(sets);
+      setIsLoading(false);
     });
   }, [page, userId]);
 
@@ -53,7 +55,10 @@ export default function MatchHistory({ pages, sets, userId }) {
               color="primary"
               page={page}
               total={pages}
-              onChange={(page) => setPage(page)}
+              onChange={(page) => {
+                setPage(page)
+                setIsLoading(true);
+              }}
             />
           </div>
         ) : null
@@ -62,7 +67,7 @@ export default function MatchHistory({ pages, sets, userId }) {
       <TableHeader columns={columns}>
         {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
       </TableHeader>
-      <TableBody items={rows}>
+      <TableBody items={rows} loadingContent={<Spinner />} isLoading={isLoading}>
         {(item) => (
           // @ts-ignore
           <TableRow key={item.key}>

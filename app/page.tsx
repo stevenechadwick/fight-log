@@ -3,10 +3,8 @@ import UserSection from "./components/userSection";
 import prisma from "@lib/prisma";
 import AddSetButton from "./components/addSet/addSetButton";
 import LayoutNav from "./components/navbar";
-import MatchHistory from "./components/matchHistory/matchHistory";
 import { MatchHistoryController } from "./components/matchHistory/matchHistoryController";
-import { RatingLineChart } from "./components/RatingHistory/ratingLineChart";
-import { RatingLineChartController } from "./components/RatingHistory/ratingLineChartController";
+import { RatingLineChartController } from "./components/ratingHistory/ratingLineChartController";
 
 async function getProfile({ username }) {
   const user = await prisma.user.findUnique({

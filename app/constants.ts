@@ -13,7 +13,7 @@ export enum HumanReadableCharacterNames{
   JP = "JP",
   JURI = "Juri",
   KEN = "Ken",
-  Kimberly = "Kimberly",
+  KIMBERLY = "Kimberly",
   LILY = "Lily",
   LUKE = "Luke",
   MANON = "Manon",

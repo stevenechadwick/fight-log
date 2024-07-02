@@ -9,7 +9,11 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        SF6: ["SF6"],
+      }
+    },
   },
   darkMode: "class",
   plugins: [nextui()],
